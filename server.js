@@ -67,7 +67,9 @@ app.post('/cache', (req, res) => {
     const value = req.body?.value
 
     caching.push(team, slot, value).then(() => {
-        res.set(setHeaders).send()
+        caching.save().finally(() => {
+            res.set(setHeaders).send()
+        })
     }).catch(() => {
         res.status(400).set(setHeaders).send()
     })
