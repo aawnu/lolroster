@@ -292,6 +292,7 @@ clickListener.prototype.bindClickables = function () {
 
     $('button[data-reset]').on('click', function () {
         if (!confirm("Sure you want to reset all selected images?")) return
+        $('button[data-reset]').attr('disabled', '')
 
         axios({
             method: 'POST',
@@ -299,11 +300,21 @@ clickListener.prototype.bindClickables = function () {
         }).then(res => {
             if (!res?.data || typeof res.data != 'object') return
 
+            let refreshTime = 100
+            let refreshCount = 0
+
             for (const [team, teamData] of Object.entries(res.data)) {
                 for (const [item, value] of Object.entries(teamData)) {
                     $(`[data-team="${team}"][data-item="${item}"]`).each((idx, elem) => {
                         if (elem.tagName == 'IMG') {
-                            elem.src = `/cache/${team}/${item}.png?${Date.now()}`
+                            setTimeout(() => {
+                                elem.src = `/cache/${team}/${item}.png?${Date.now()}`
+                            }, refreshTime)
+                            refreshCount += 1
+                            if (refreshCount >= 6) {
+                                refreshCount = 0
+                                refreshTime += 100
+                            }
                         } else if (elem.tagName == 'INPUT') {
                             elem.value = value
                         }
@@ -313,6 +324,10 @@ clickListener.prototype.bindClickables = function () {
         }).catch(err => {
             const res = err.response
             alert(res?.data?.message || 'Failed to reset')
+        }).finally(() => {
+            setTimeout(() => {
+                $('button[data-reset]').removeAttr('disabled')
+            }, 1337)
         })
     })
     return this

@@ -148,10 +148,6 @@ body {
     top: 1.2rem;
 }
 
-.teams .team .name button[data-swap]:disabled {
-    background-color: var(--color-bg);
-}
-
 .teams .team .bans {
     display: grid;
     grid-template-columns: repeat(5, 120px);
@@ -203,6 +199,7 @@ body {
     padding: 1rem 3rem;
     display: grid;
 }
+
 .selection .searchfor input {
     display: block;
     padding: 1rem 2rem;
@@ -301,4 +298,9 @@ body {
     font-weight: light;
     text-align: center;
     font-size: 0.8rem;
+}
+
+button[data-swap]:disabled,
+button[data-reset]:disabled {
+    background-color: var(--color-bg);
 }
