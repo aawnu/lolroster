@@ -1,0 +1,20 @@
+:root {
+    --color-bg: #1a1a1a;
+    --color-header: #F6B352;
+    --color-body: #FFEEE4;
+    --color-team-blue: #02264b;
+    --color-team-blue-dark: #033363;
+    --color-team-blue-light: #04407c;
+    --color-team-blue-highlight: #0680f9;
+    --color-team-red: #4b0214;
+    --color-team-red-dark: #63031b;
+    --color-team-red-light: #7c0422;
+    --color-team-red-highlight: #f90643;
+}
+
+html, body {
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1em;
+    font-family: 'Open Sans', sans-serif;
+}

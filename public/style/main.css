@@ -1,0 +1,304 @@
+body {
+    background-color: var(--color-bg);
+    color: var(--color-body);
+}
+
+.clickable {
+    cursor: pointer;
+}
+
+.is-select {
+    outline: 1px solid #FFD70055;
+    box-shadow: 0 0 1.25rem -0.25rem #FFD700;
+    cursor: progress;
+}
+
+.hidden {
+    display: none;
+}
+
+.match {
+    padding: 0.5rem 1rem;
+
+    display: grid;
+    grid-template-columns: auto 0fr;
+    column-gap: 1rem;
+}
+
+.match button {
+    aspect-ratio: 1 / 1;
+    width: 2em;
+    height: 2em;
+    background-color: var(--color-header);
+    color: var(--color-body);
+    font-size: 1rem;
+    line-height: 1rem;
+    border: 0;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+}
+
+.match .utility,
+.match .reset {
+    display: flex;
+    align-items: center;
+    column-gap: 0.5rem;
+}
+
+.match .utility {
+    justify-content: flex-start;
+}
+
+.match .utility input {
+    padding: 0.2rem 0.5rem;
+    background-color: transparent;
+    color: var(--color-header);
+    font-weight: 900;
+    border: none;
+}
+
+.match .reset {
+    justify-content: flex-end;
+}
+
+.match .reset button {
+    background-color: #ff0048;
+    color: var(--color-body);
+}
+
+.teams {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.teams .team {
+    padding: 0.5rem 2rem;
+}
+
+.teams .team h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.33em;
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.teams .team.blue {
+    background-color: var(--color-team-blue);
+}
+
+.teams .team.red {
+    background-color: var(--color-team-red);
+}
+
+.teams .team .name {
+    padding: 1rem 2rem;
+    display: grid;
+    grid-template-columns: auto 0fr;
+    position: relative;
+}
+
+.teams .team .name input {
+    padding: 0.5rem;
+    font-size: 3rem;
+    line-height: 1rem;
+    font-weight: 700;
+    text-align: center;
+    border: 0;
+    outline: 0;
+    color: var(--color-header);
+}
+
+.teams .team.blue .name input {
+    background-color: var(--color-team-blue-dark);
+}
+
+.teams .team.red .name input {
+    background-color: var(--color-team-red-dark);
+}
+
+.teams .team .name button {
+    padding: 1rem 2rem;
+    font-size: 2rem;
+    line-height: 1rem;
+    font-weight: bold;
+    text-align: center;
+    border: 0;
+    outline: 0;
+    color: var(--color-header);
+}
+
+.teams .team.blue .name button {
+    background-color: var(--color-team-blue-light);
+}
+
+.teams .team.red .name button {
+    background-color: var(--color-team-red-light);
+}
+
+.teams .team .name button[data-swap] {
+    color: var(--color-body);
+    background-color: var(--color-header);
+    border-radius: .5rem;
+    padding: 1rem;
+
+    position: absolute;
+    right: calc(100%);
+    top: 1.2rem;
+}
+
+.teams .team .name button[data-swap]:disabled {
+    background-color: var(--color-bg);
+}
+
+.teams .team .bans {
+    display: grid;
+    grid-template-columns: repeat(5, 120px);
+    justify-content: center;
+    column-gap: 1rem;
+}
+
+.teams .team .bans .ban {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.teams .team .bans .ban img {
+    display: block;
+    max-width: 100%;
+}
+
+.teams .team .champs {
+    display: grid;
+    grid-template-columns: repeat(5, 120px);
+    justify-content: center;
+    column-gap: 1rem;
+}
+
+.teams .team .champs .champ {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.teams .team .champs .champ img {
+    display: block;
+    max-width: 100%;
+}
+
+.teams .team .champs .champ .spells {
+    margin-top: 0.25rem;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 0.25rem;
+    width: 120px;
+    max-width: 100%;
+}
+
+.selection .searchfor {
+    padding: 1rem 3rem;
+    display: grid;
+}
+.selection .searchfor input {
+    display: block;
+    padding: 1rem 2rem;
+    color: var(--color-body);
+    border: 0;
+    border-bottom: 2px solid #4a4a4a;
+    background: transparent;
+    font-size: 1.5rem;
+    line-height: 1em;
+    text-align: center;
+}
+
+.selection .champs {
+    padding: 2rem;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, 64px);
+    grid-auto-rows: 1fr;
+    grid-auto-columns: 1fr;
+    column-gap: 0.75rem;
+    row-gap: 1rem;
+}
+
+.selection .champs .champ {
+    display: block;
+    position: relative;
+}
+
+.selection .champs .champ .icon {
+    display: block;
+    max-width: 100%;
+}
+
+.selection .champs .champ span.id {
+    display: block;
+    text-align: center;
+    min-width: 1rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    background-color: #000005;
+    padding: 0.33rem;
+    border-bottom-right-radius: 0.75rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.selection .champs .champ span.name {
+    display: block;
+    margin-top: 0.25rem;
+    line-height: 1.35em;
+    font-weight: light;
+    text-align: center;
+    font-size: 0.8rem;
+}
+
+.selection .spells {
+    padding: 2rem;
+    display: grid;
+    justify-content: center;
+    grid-template-columns: repeat(auto-fill, 64px);
+    grid-auto-rows: 1fr;
+    grid-auto-columns: 1fr;
+    column-gap: 0.75rem;
+    row-gap: 1rem;
+}
+
+.selection .spells .spell {
+    display: block;
+    position: relative;
+}
+
+.selection .spells .spell .icon {
+    display: block;
+    max-width: 100%;
+}
+
+.selection .spells .spell span.id {
+    display: block;
+    text-align: center;
+    min-width: 1rem;
+    font-size: 0.8rem;
+    font-weight: bold;
+    background-color: #000005;
+    padding: 0.33rem;
+    border-bottom-right-radius: 0.75rem;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.selection .spells .spell span.name {
+    display: block;
+    margin-top: 0.25rem;
+    line-height: 1.35em;
+    font-weight: light;
+    text-align: center;
+    font-size: 0.8rem;
+}

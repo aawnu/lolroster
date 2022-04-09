@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoL | Rooster</title>
+
+    <link rel="preconnect" href="https://kit.fontawesome.com">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap">
+    <link rel="stylesheet" href="/style/reset.css">
+    <link rel="stylesheet" href="/style/scheme.css">
+    <link rel="stylesheet" href="/style/main.css">
+
+    <script src="https://kit.fontawesome.com/3695a15225.js" crossorigin="anonymous"></script>
+    <script src="/script/jquery.min.js"></script>
+    <script src="/script/axios.min.js"></script>
+    <script src="/script/elemlistener.js"></script>
+</head>
+
+<body>
+
+    <section class="match">
+        <div class="utility">
+            <div><svg class="svg-inline--fa fa-quote-right fa-w-16" aria-hidden="true" focusable="false"
+                    data-prefix="fas" data-icon="quote-right" role="img" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 512 512" data-fa-i2svg="">
+                    <path fill="currentColor"
+                        d="M464 32H336c-26.5 0-48 21.5-48 48v128c0 26.5 21.5 48 48 48h80v64c0 35.3-28.7 64-64 64h-8c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24h8c88.4 0 160-71.6 160-160V80c0-26.5-21.5-48-48-48zm-288 0H48C21.5 32 0 53.5 0 80v128c0 26.5 21.5 48 48 48h80v64c0 35.3-28.7 64-64 64h-8c-13.3 0-24 10.7-24 24v48c0 13.3 10.7 24 24 24h8c88.4 0 160-71.6 160-160V80c0-26.5-21.5-48-48-48z">
+                    </path>
+                </svg></div>
+            <input class="currentText" data-name="match" value="Red vs Blue" readonly>
+        </div>
+        <div class="reset">
+            <button data-reset><svg class="svg-inline--fa fa-trash fa-w-14" aria-hidden="true" focusable="false"
+                    data-prefix="fas" data-icon="trash" role="img" xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 448 512" data-fa-i2svg="">
+                    <path fill="currentColor"
+                        d="M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z">
+                    </path>
+                </svg></button>
+        </div>
+    </section>
+
+    <section class="teams">
+        <div class="team blue">
+            <div class="name">
+                <input data-name="blue" type="text" value="..." readonly>
+            </div>
+
+            <h2>Ban selection</h2>
+            <div class="bans">
+                <div class="ban">
+                    <img data-select="champ" data-team="blue" data-item="ban1">
+                </div>
+                <div class="ban">
+                    <img data-select="champ" data-team="blue" data-item="ban2">
+                </div>
+                <div class="ban">
+                    <img data-select="champ" data-team="blue" data-item="ban3">
+                </div>
+                <div class="ban">
+                    <img data-select="champ" data-team="blue" data-item="ban4">
+                </div>
+                <div class="ban">
+                    <img data-select="champ" data-team="blue" data-item="ban5">
+                </div>
+            </div>
+
+            <h2>Champion selection</h2>
+            <div class="champs">
+                <div class="champ">
+                    <img data-select="champ" data-team="blue" data-item="champ1">
+                    <div class="spells">
+                        <div class="spell"><img data-select="spell" data-team="blue" data-item="champ1spell1"></div>
+                        <div class="spell"><img data-select="spell" data-team="blue" data-item="champ1spell2"></div>
+                    </div>
+                </div>
+                <div class="champ">
+                    <img data-select="champ" data-team="blue" data-item="champ2">
+                    <div class="spells">
+                        <div class="spell"><img data-select="spell" data-team="blue" data-item="champ2spell1"></div>
+                        <div class="spell"><img data-select="spell" data-team="blue" data-item="champ2spell2"></div>
+                    </div>
+                </div>
+                <div class="champ">
+                    <img data-select="champ" data-team="blue" data-item="champ3">
+                    <div class="spells">
+                        <div class="spell"><img data-select="spell" data-team="blue" data-item="champ3spell1"></div>
+                        <div class="spell"><img data-select="spell" data-team="blue" data-item="champ3spell2"></div>
+                    </div>
+                </div>
+                <div class="champ">
+                    <img data-select="champ" data-team="blue" data-item="champ4">
+                    <div class="spells">
+                        <div class="spell"><img data-select="spell" data-team="blue" data-item="champ4spell1"></div>
+                        <div class="spell"><img data-select="spell" data-team="blue" data-item="champ4spell2"></div>
+                    </div>
+                </div>
+                <div class="champ">
+                    <img data-select="champ" data-team="blue" data-item="champ5">
+                    <div class="spells">
+                        <div class="spell"><img data-select="spell" data-team="blue" data-item="champ5spell1"></div>
+                        <div class="spell"><img data-select="spell" data-team="blue" data-item="champ5spell2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="team red">
+            <div class="name">
+                <button data-swap title="Swap names"><svg class="svg-inline--fa fa-exchange-alt fa-w-16"
+                        aria-hidden="true" focusable="false" data-prefix="fas" data-icon="exchange-alt" role="img"
+                        xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
+                        <path fill="currentColor"
+                            d="M0 168v-16c0-13.255 10.745-24 24-24h360V80c0-21.367 25.899-32.042 40.971-16.971l80 80c9.372 9.373 9.372 24.569 0 33.941l-80 80C409.956 271.982 384 261.456 384 240v-48H24c-13.255 0-24-10.745-24-24zm488 152H128v-48c0-21.314-25.862-32.08-40.971-16.971l-80 80c-9.372 9.373-9.372 24.569 0 33.941l80 80C102.057 463.997 128 453.437 128 432v-48h360c13.255 0 24-10.745 24-24v-16c0-13.255-10.745-24-24-24z">
+                        </path>
+                    </svg></button>
+
+                <input data-name="red" type="text" value="..." readonly>
+            </div>
+
+            <h2>Ban selection</h2>
+            <div class="bans">
+                <div class="ban">
+                    <img data-select="champ" data-team="red" data-item="ban1">
+                </div>
+                <div class="ban">
+                    <img data-select="champ" data-team="red" data-item="ban2">
+                </div>
+                <div class="ban">
+                    <img data-select="champ" data-team="red" data-item="ban3">
+                </div>
+                <div class="ban">
+                    <img data-select="champ" data-team="red" data-item="ban4">
+                </div>
+                <div class="ban">
+                    <img data-select="champ" data-team="red" data-item="ban5">
+                </div>
+            </div>
+
+            <h2>Champion selection</h2>
+            <div class="champs">
+                <div class="champ">
+                    <img data-select="champ" data-team="red" data-item="champ1">
+                    <div class="spells">
+                        <div class="spell"><img data-select="spell" data-team="red" data-item="champ1spell1"></div>
+                        <div class="spell"><img data-select="spell" data-team="red" data-item="champ1spell2"></div>
+                    </div>
+                </div>
+                <div class="champ">
+                    <img data-select="champ" data-team="red" data-item="champ2">
+                    <div class="spells">
+                        <div class="spell"><img data-select="spell" data-team="red" data-item="champ2spell1"></div>
+                        <div class="spell"><img data-select="spell" data-team="red" data-item="champ2spell2"></div>
+                    </div>
+                </div>
+                <div class="champ">
+                    <img data-select="champ" data-team="red" data-item="champ3">
+                    <div class="spells">
+                        <div class="spell"><img data-select="spell" data-team="red" data-item="champ3spell1"></div>
+                        <div class="spell"><img data-select="spell" data-team="red" data-item="champ3spell2"></div>
+                    </div>
+                </div>
+                <div class="champ">
+                    <img data-select="champ" data-team="red" data-item="champ4">
+                    <div class="spells">
+                        <div class="spell"><img data-select="spell" data-team="red" data-item="champ4spell1"></div>
+                        <div class="spell"><img data-select="spell" data-team="red" data-item="champ4spell2"></div>
+                    </div>
+                </div>
+                <div class="champ">
+                    <img data-select="champ" data-team="red" data-item="champ5">
+                    <div class="spells">
+                        <div class="spell"><img data-select="spell" data-team="red" data-item="champ5spell1"></div>
+                        <div class="spell"><img data-select="spell" data-team="red" data-item="champ5spell2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="selection">
+        <div class="searchfor">
+            <input type="text" placeholder="Search for selection item">
+        </div>
+        <div class="champs" style="display:none;"></div>
+        <div class="spells" style="display:none;"></div>
+    </section>
+
+    <script defer>
+        new clickListener()
+            .loadChamps()
+            .loadSpells()
+            .loadSelectables()
+            .bindClickables()
+            .bindSearch()
+    </script>
+</body>
+
+</html>

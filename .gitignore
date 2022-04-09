@@ -1,6 +1,8 @@
 node_modules/
-cache/blue/**
-cache/red/**
+cache/**.txt
+cache/**/*.txt
+cache/**.png
+cache/**/*.png
 core/data/**
 public/img/**
 !**/.gitkeep
