@@ -55,6 +55,8 @@ All the interesting files that are exposed on the hosted server through various 
 | `http://ip:port/banner/...`  | `./public/banner/...`  | All downloaded champion banners downloaded from Riot       |
 | `http://ip:port/spell/...`   | `./public/spell/...`   | All downloaded spell icons downloaded from Riot            |
 
+- Example: `./cache/red/ban1.png` can be found on both `http://ip:port/cache/red/ban1.png` and `http://ip:port/live/red/ban1.png` with the only difference that /live/ has a Refresh header of 2 seconds.
+
 Please note that these are the default sizes of the images downloaded from Riot:
 
 | Image             | Size in pixels  |
