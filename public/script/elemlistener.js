@@ -119,6 +119,9 @@ clickListener.prototype.clickSelect = function (elem = null) {
     } else {
         $('.selection .spells').hide()
         $('.selection .champs').hide()
+        $('html, body').animate({
+            scrollTop: $("section.match").offset().top
+        }, 336);
         $('.selection .searchfor input').val('')
         $(`.selection .champs .champ, .selection .spells .spell`).fadeIn(133)
     }
