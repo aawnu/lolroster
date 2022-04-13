@@ -1,6 +1,8 @@
 name: Validate Server & Endpoints
 
-on: [push]
+on:
+  pull_request:
+    branches: [ master ]
 
 jobs:
   build:
