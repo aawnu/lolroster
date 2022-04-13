@@ -198,6 +198,7 @@ app.post(`/${validateServerPath}`, (req, res) => {
     res.send(validateServer)
 })
 
+let statusBool = false
 caching.build().then(() => {
     console.log("Build the cache from core/data/cache.json")
     app.listen(serverPort, serverIp, () => {
@@ -223,8 +224,15 @@ caching.build().then(() => {
                 }).catch(err => null)
             })
         }
+        
+        statusBool = true
     })
 }).catch(err => {
-    console.error(err)
-    console.log('NOTICE: Server is public')
+    throw new Error('Could not start server')
 })
+
+const status = () => {
+    return statusBool
+}
+
+module.exports = {app, status, caching}
