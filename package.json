@@ -2,7 +2,8 @@
   "scripts": {
     "server": "node server.js",
     "build": "npm ci && node core/download.js",
-    "download": "node core/download.js"
+    "download": "node core/download.js",
+    "test": "node test/test"
   },
   "dependencies": {
     "axios": "^0.26.1",
