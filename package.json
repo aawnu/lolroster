@@ -3,7 +3,7 @@
     "server": "node server.js",
     "build": "npm ci && node core/download.js",
     "download": "node core/download.js",
-    "test": "node test/test"
+    "test": "node test/validate-server-endpoint"
   },
   "dependencies": {
     "axios": "^0.26.1",
