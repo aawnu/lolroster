@@ -318,3 +318,44 @@ button[data-swap]:disabled,
 button[data-reset]:disabled {
     background-color: var(--color-bg);
 }
+
+.noticePopup {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+.noticePopup .container {
+    margin: 0.1rem 2rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    border: 5px solid var(--color-bg);
+    background-color: var(--color-header);
+    text-align: center;
+    color: var(--color-bg);
+    font-weight: 900;
+}
+
+.noticePopup .container:not(:nth-last-child(-n+5)) {
+    display: none !important;
+    height: 0px;
+    margin: 0;
+    padding: 0;
+}
+
+.noticePopup .container:nth-last-child(5) {
+    opacity: 0.1;
+}
+
+.noticePopup .container:nth-last-child(4) {
+    opacity: 0.25;
+}
+
+.noticePopup .container:nth-last-child(3) {
+    opacity: 0.5;
+}
+
+.noticePopup .container:nth-last-child(2) {
+    opacity: 0.75;
+}

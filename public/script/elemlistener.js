@@ -12,6 +12,30 @@ const clickListener = function () {
     this.getChampSpell = '/img/spell/%.png'
 
     this.search = null
+    this.popCount = 0;
+}
+
+clickListener.prototype.pushAlert = function (text, duration = 3666, animation = 336) {
+    this.popCount += 1;
+    const cid = '' + this.popCount
+
+    let container = (
+        `<div class="container" data-cid="${cid}" style="display:none">${text}</div>`
+    )
+
+    $('aside.noticePopup').append(container)
+    $(`aside.noticePopup > [data-cid="${cid}"]`)
+        .slideDown(animation)
+
+    setTimeout(() => {
+        $(`aside.noticePopup > .container[data-cid="${cid}"]`)
+            .fadeOut(animation * 0.66)
+        setTimeout(() => {
+            $(`aside.noticePopup > .container[data-cid="${cid}"]`).remove()
+        }, animation)
+    }, duration)
+
+    return this
 }
 
 clickListener.prototype.clickChamp = function (elem = null) {
@@ -22,7 +46,7 @@ clickListener.prototype.clickChamp = function (elem = null) {
         || this.bindType != 'champ'
         || elem === null
     ) {
-        alert('Something went wrong, tried to select champ in the wrong state.')
+        this.pushAlert('Something went wrong, tried to select champ in the wrong state.')
         this.clickSelect()
         return
     }
@@ -58,7 +82,7 @@ clickListener.prototype.clickSpell = function (elem = null) {
         || this.bindType != 'spell'
         || elem === null
     ) {
-        alert('Something went wrong, tried to select spell in the wrong state.')
+        this.pushAlert('Something went wrong, tried to select spell in the wrong state.')
         this.clickSelect()
         return
     }
@@ -166,11 +190,11 @@ clickListener.prototype.loadSelectables = function () {
             $(`[data-name="${field}"]`).each((idx, elem) => {
                 if (elem.tagName == 'INPUT') {
                     elem.value = value
-                } else if (elem.tagName != 'INPUT') {
+                } else if (elem.tagName != 'BUTTON') {
                     elem.innerText = value
                 }
 
-                elem.classList.add('clickable')
+                elem.setAttribute('data-current', value)
             })
         }
     })
@@ -254,6 +278,7 @@ clickListener.prototype.loadSpells = function () {
 }
 
 clickListener.prototype.bindClickables = function () {
+    const self = this
     $('button[data-swap]').on('click', function () {
         $('button[data-swap]').attr('disabled', true)
         axios({
@@ -273,13 +298,16 @@ clickListener.prototype.bindClickables = function () {
         })
     })
 
-    $('input[data-name]').on('click', function (event) {
+    $('button[data-name]').on('click', function (event) {
         const elem = event.currentTarget
         const id = elem.getAttribute('data-name')
-        const value = elem.value.toString()
-        const setValue = prompt(`New name for ${id}?`)
+        const getValue = $(`input[data-name="${id}"]`).attr('data-current')
+        const setValue = $(`input[data-name="${id}"]`).val()
 
-        if (!setValue || setValue == value) return
+        if (!setValue || setValue == getValue) {
+            self.pushAlert("Name can't be the same or empty")
+            return
+        }
 
         axios({
             method: 'POST',
@@ -289,7 +317,9 @@ clickListener.prototype.bindClickables = function () {
                 value: setValue
             }
         }).then(res => {
-            elem.value = res.data?.name
+            $(`input[data-name="${id}"]`).val(res.data?.name)
+            $(`input[data-name="${id}"]`).attr('data-current', setValue)
+            self.pushAlert(`Changed ${id} from ${getValue} to ${setValue}`)
         })
     })
 
@@ -326,10 +356,11 @@ clickListener.prototype.bindClickables = function () {
             }
         }).catch(err => {
             const res = err.response
-            alert(res?.data?.message || 'Failed to reset')
+            self.pushAlert(res?.data?.message || 'Failed to reset')
         }).finally(() => {
             setTimeout(() => {
                 $('button[data-reset]').removeAttr('disabled')
+                self.pushAlert('Reset images')
             }, 1337)
         })
     })
