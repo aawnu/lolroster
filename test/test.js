@@ -74,5 +74,5 @@ setInterval(() => {
         iterateMax--
         return
     }
-    process.exit(1)
+    process.exit()
 }, 100)
