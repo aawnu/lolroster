@@ -137,7 +137,7 @@ clickListener.prototype.clickSelect = function (elem = null) {
         $('.selection .spells').slideDown(300)
         $('.selection .champs').hide()
         $('html, body').animate({
-            scrollTop: $("section.selection").offset().top
+            scrollTop: $("section.match").offset().top
         }, 336);
         $('.selection .searchfor input').trigger('focus')
     } else {
