@@ -3,6 +3,16 @@ body {
     color: var(--color-body);
 }
 
+*::-webkit-scrollbar {
+    width: 0.25em;
+    height: 0.25em;
+    background-color: var(--color-bg);
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--color-header);
+}
+
 .clickable {
     cursor: pointer;
 }
@@ -193,6 +203,10 @@ body {
     column-gap: 0.25rem;
     width: 120px;
     max-width: 100%;
+}
+
+.selection {
+    min-height: 100vh;
 }
 
 .selection .searchfor {
