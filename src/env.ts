@@ -6,6 +6,6 @@ const envPath = path.resolve(__dirname, '../.env')
 const envLoad = fs.readFileSync(envPath, 'utf8')
 const envData = dotenv.parse(envLoad)
 
-export default (name: string, fallback?: string | number): string | number | null | boolean => {
+export default (name: string, fallback?: string | number | null | boolean): string | number | null | boolean => {
     return envData?.[name] ?? (fallback ?? null)
 }
