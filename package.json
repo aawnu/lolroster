@@ -4,7 +4,7 @@
     "build": "npm ci && ts-node --transpile-only core/download",
     "download": "ts-node --transpile-only core/download",
     "test": "ts-node --transpile-only test/validate-server-endpoint",
-    "dev": "tsnd --respawn server"
+    "dev": "tsnd --respawn --clear --watch 'src/**' server"
   },
   "dependencies": {
     "@types/express": "^4.17.13",
