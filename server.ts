@@ -1,15 +1,16 @@
-require('dotenv').config()
-const os = require('os')
-const fs = require('fs')
-const path = require('path')
-const axios = require('axios')
-const express = require('express')
-const crypto = require("crypto")
-const caching = require('./core/caching.js')
+import env from './src/env'
+
+import os from 'os'
+import fs from 'fs'
+import path from 'path'
+import axios from 'axios'
+import express from 'express'
+import crypto from "crypto"
+import caching from './core/caching'
 
 const app = express()
 const serverLocal = '127.0.0.1'
-const serverIp = process.env?.SERVER_PUBLIC == 1 ? '0.0.0.0' : serverLocal
+const serverIp = env('SERVER_PUBLIC', 0) == 1 ? '0.0.0.0' : serverLocal
 const serverPort = Number(process.env?.SERVER_PORT || 3000)
 const validateServerPath = crypto.randomBytes(64).toString('hex')
 const validateServer = crypto.randomBytes(32).toString('hex')
@@ -134,10 +135,7 @@ app.post('/action/name', (req, res) => {
         return res.status(400).send({ name: value })
     }
 
-    fs.writeFileSync(src, value, err => {
-        if (!err) return
-        console.error(err)
-    })
+    fs.writeFileSync(src, value)
 
     let setHeaders = {
         'Cache-Control': 'no-cache, must-revalidate',
@@ -173,14 +171,8 @@ app.post('/action/swap', (req, res) => {
     const nameBlue = fs.readFileSync(loadNameBlue, 'utf8')
     const nameRed = fs.readFileSync(loadNameRed, 'utf8')
 
-    fs.writeFileSync(loadNameRed, nameBlue, err => {
-        if (!err) return
-        console.error(err)
-    })
-    fs.writeFileSync(loadNameBlue, nameRed, err => {
-        if (!err) return
-        console.error(err)
-    })
+    fs.writeFileSync(loadNameRed, nameBlue)
+    fs.writeFileSync(loadNameBlue, nameRed)
 
     let setHeaders = {
         'Cache-Control': 'no-cache, must-revalidate',
@@ -207,7 +199,7 @@ caching.build().then(() => {
 
         const getIpTable = os.networkInterfaces()
         for (const [key, packet] of Object.entries(getIpTable)) {
-            packet.forEach(row => {
+            packet?.forEach(row => {
                 const ip = row.family == 'IPv6' ? `[${row.address}]` : row.address
                 if (ip == serverLocal) return
 
@@ -227,7 +219,7 @@ caching.build().then(() => {
         
         statusBool = true
     })
-}).catch(err => {
+}).catch(() => {
     throw new Error('Could not start server')
 })
 
