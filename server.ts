@@ -9,7 +9,7 @@ import * as caching from './src/cache'
 
 const app = express()
 const serverLocal = '127.0.0.1'
-const serverIp = env('SERVER_PUBLIC', 0) == 1 ? '0.0.0.0' : serverLocal
+const serverIp = env('SERVER_PUBLIC', '127.0.0.1') == 1 ? '0.0.0.0' : serverLocal
 const serverPort = Number(process.env?.SERVER_PORT || 3000)
 const validateServerPath = crypto.randomBytes(64).toString('hex')
 const validateServer = crypto.randomBytes(32).toString('hex')
@@ -189,22 +189,28 @@ app.post(`/${validateServerPath}`, (req, res) => {
     res.send(validateServer)
 })
 
-let statusBool = false
-caching.build().then(() => {
-    console.log("Build the cache from core/data/cache.json")
+export let statusBool: boolean = false
+
+caching.build(false).then(() => {
     app.listen(serverPort, serverIp, () => {
         const host = `http://${serverLocal}:${serverPort}`
         console.log(`Local host: ${host}`)
-
+    
         const getIpTable = os.networkInterfaces()
-        for (const [key, packet] of Object.entries(getIpTable)) {
-            packet?.forEach(row => {
-                const ip = row.family == 'IPv6' ? `[${row.address}]` : row.address
-                if (ip == serverLocal) return
-
+        Object.values(getIpTable).forEach(list => {
+            if (!list) {
+                return
+            }
+            
+            Object.values(list).forEach(listItem => {
+                if (!listItem || listItem.internal) {
+                    return
+                }
+    
+                const ip = listItem.family == 'IPv6' ? `[${listItem.address}]` : listItem.address
                 const host = `http://${ip}:${serverPort}`
                 const self = `${host}/${validateServerPath}`
-
+                
                 axios({
                     method: 'POST',
                     url: self
@@ -212,18 +218,8 @@ caching.build().then(() => {
                     if (res.data == validateServer) {
                         console.log(`Public host: ${host}`)
                     }
-                })
+                }).catch(() => {})
             })
-        }
-        
-        statusBool = true
+        })
     })
-}).catch(() => {
-    throw new Error('Could not start server')
-})
-
-const status = () => {
-    return statusBool
-}
-
-module.exports = {app, status, caching}
+}).catch(() => console.log('Failed to start server'))

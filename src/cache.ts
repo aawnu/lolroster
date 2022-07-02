@@ -39,8 +39,8 @@ export let teamsStructure: LolTeams = {
 
 export let teams: LolTeams = teamsStructure
 
-const srcCache = path.resolve('cache')
-const srcData = path.resolve('core/data')
+const srcCache = path.resolve(__dirname, '../cache')
+const srcData = path.resolve(__dirname, 'cache.json')
 
 const supportMediaTypes = ['.png', '.jpg', '.jpeg', '.gif', '.bmp']
 const savePng = '.png'
