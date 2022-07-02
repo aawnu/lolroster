@@ -1,8 +1,8 @@
 {
   "scripts": {
     "server": "ts-node --transpile-only server",
-    "build": "npm ci && ts-node --transpile-only core/download",
-    "download": "ts-node --transpile-only core/download",
+    "build": "npm ci && ts-node --transpile-only src/download",
+    "download": "ts-node --transpile-only src/download",
     "test": "ts-node --transpile-only test/validate-server-endpoint",
     "dev": "tsnd --respawn --clear --watch 'src/**' server"
   },
