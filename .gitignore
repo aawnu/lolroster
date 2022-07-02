@@ -5,4 +5,6 @@ cache/**.png
 cache/**/*.png
 core/data/**
 public/img/**
+log/**
+**.log
 !**/.gitkeep

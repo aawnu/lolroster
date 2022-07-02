@@ -1,5 +1,0 @@
-[ERROR] 11:40:14 ⨯ Unable to compile TypeScript:
-src/cache.ts(91,16): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'LolTeams'.
-  No index signature with a parameter of type 'string' was found on type 'LolTeams'.
-src/cache.ts(95,5): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type 'LolTeams'.
-  No index signature with a parameter of type 'string' was found on type 'LolTeams'.
