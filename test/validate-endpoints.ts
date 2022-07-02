@@ -9,7 +9,7 @@ import('../server').then(server => {
             let iterations: number = 0
             setTimeout(() => {
                 if (iterations > 10) {
-                    resolve(false)
+                    throw new Error("Could not instanciate server within 10 seconds")
                 }
 
                 if (server.statusBool) {
