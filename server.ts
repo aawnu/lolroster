@@ -1,12 +1,11 @@
 import env from './src/env'
-
 import os from 'os'
 import fs from 'fs'
 import path from 'path'
 import axios from 'axios'
 import express from 'express'
 import crypto from "crypto"
-import caching from './core/caching'
+import * as caching from './src/cache'
 
 const app = express()
 const serverLocal = '127.0.0.1'
@@ -150,7 +149,7 @@ app.post('/action/name', (req, res) => {
 
 app.post('/action/reset', (req, res) => {
     caching.build(true).then(callback => {
-        if (callback.errors.length > 0) {
+        if (Object.values(callback.errors).length > 0) {
             return res.status(400).send()
         }
 
@@ -213,7 +212,7 @@ caching.build().then(() => {
                     if (res.data == validateServer) {
                         console.log(`Public host: ${host}`)
                     }
-                }).catch(err => null)
+                })
             })
         }
         
