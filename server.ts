@@ -191,7 +191,7 @@ app.post(`/${validateServerPath}`, (req, res) => {
 
 export let statusBool: boolean = false
 
-caching.build(false).then(() => {
+caching.build(false).then(err => {
     app.listen(serverPort, serverIp, () => {
         const host = `http://${serverLocal}:${serverPort}`
         console.log(`Local host: ${host}`)
