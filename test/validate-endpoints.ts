@@ -56,6 +56,11 @@ import('../server').then(server => {
     })
 }).then(testFinal => {
     console.table(testFinal)
+    testFinal.forEach(val => {
+        if (val.status != 200) {
+            process.exit(1)
+        }
+    })
     process.exit(0)
 }).catch(serverError => {
     console.error('~ Server failed authentication ~', serverError)
