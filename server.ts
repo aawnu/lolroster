@@ -1,18 +1,23 @@
-require('dotenv').config()
-const os = require('os')
-const fs = require('fs')
-const path = require('path')
-const axios = require('axios')
-const express = require('express')
-const crypto = require("crypto")
-const caching = require('./core/caching.js')
+import env from './src/env'
+import os from 'os'
+import fs from 'fs'
+import path from 'path'
+import axios from 'axios'
+import express from 'express'
+import crypto from "crypto"
+import * as caching from './src/cache'
 
 const app = express()
+
 const serverLocal = '127.0.0.1'
-const serverIp = process.env?.SERVER_PUBLIC == 1 ? '0.0.0.0' : serverLocal
-const serverPort = Number(process.env?.SERVER_PORT || 3000)
-const validateServerPath = crypto.randomBytes(64).toString('hex')
-const validateServer = crypto.randomBytes(32).toString('hex')
+const serverIp = env('SERVER_PUBLIC', '127.0.0.1') == 1 ? '0.0.0.0' : serverLocal
+
+export const validateServer = crypto.randomBytes(32).toString('hex')
+export const validateServerPath = crypto.randomBytes(64).toString('hex')
+
+export let statusBool: boolean = false
+export let serverUrl: string = `http://${serverLocal}`;
+export const serverPort = Number(env('SERVER_PORT', 3000))
 
 app.use(express.json())
 app.use('/script', express.static('node_modules/axios/dist'))
@@ -134,10 +139,7 @@ app.post('/action/name', (req, res) => {
         return res.status(400).send({ name: value })
     }
 
-    fs.writeFileSync(src, value, err => {
-        if (!err) return
-        console.error(err)
-    })
+    fs.writeFileSync(src, value)
 
     let setHeaders = {
         'Cache-Control': 'no-cache, must-revalidate',
@@ -152,7 +154,7 @@ app.post('/action/name', (req, res) => {
 
 app.post('/action/reset', (req, res) => {
     caching.build(true).then(callback => {
-        if (callback.errors.length > 0) {
+        if (Object.values(callback.errors).length > 0) {
             return res.status(400).send()
         }
 
@@ -173,14 +175,8 @@ app.post('/action/swap', (req, res) => {
     const nameBlue = fs.readFileSync(loadNameBlue, 'utf8')
     const nameRed = fs.readFileSync(loadNameRed, 'utf8')
 
-    fs.writeFileSync(loadNameRed, nameBlue, err => {
-        if (!err) return
-        console.error(err)
-    })
-    fs.writeFileSync(loadNameBlue, nameRed, err => {
-        if (!err) return
-        console.error(err)
-    })
+    fs.writeFileSync(loadNameRed, nameBlue)
+    fs.writeFileSync(loadNameBlue, nameRed)
 
     let setHeaders = {
         'Cache-Control': 'no-cache, must-revalidate',
@@ -198,19 +194,23 @@ app.post(`/${validateServerPath}`, (req, res) => {
     res.send(validateServer)
 })
 
-let statusBool = false
-caching.build().then(() => {
-    console.log("Build the cache from core/data/cache.json")
+caching.build(false).then(err => {
     app.listen(serverPort, serverIp, () => {
         const host = `http://${serverLocal}:${serverPort}`
         console.log(`Local host: ${host}`)
 
         const getIpTable = os.networkInterfaces()
-        for (const [key, packet] of Object.entries(getIpTable)) {
-            packet.forEach(row => {
-                const ip = row.family == 'IPv6' ? `[${row.address}]` : row.address
-                if (ip == serverLocal) return
+        Object.values(getIpTable).forEach(list => {
+            if (!list) {
+                return
+            }
 
+            Object.values(list).forEach(listItem => {
+                if (!listItem || listItem.internal) {
+                    return
+                }
+
+                const ip = listItem.family == 'IPv6' ? `[${listItem.address}]` : listItem.address
                 const host = `http://${ip}:${serverPort}`
                 const self = `${host}/${validateServerPath}`
 
@@ -220,19 +220,15 @@ caching.build().then(() => {
                 }).then(res => {
                     if (res.data == validateServer) {
                         console.log(`Public host: ${host}`)
+                        serverUrl = host
                     }
-                }).catch(err => null)
+                }).catch(() => { })
             })
-        }
-        
+        })
+
         statusBool = true
     })
-}).catch(err => {
-    throw new Error('Could not start server')
+}).catch(() => {
+    statusBool = false
+    console.log('Failed to start server')
 })
-
-const status = () => {
-    return statusBool
-}
-
-module.exports = {app, status, caching}
