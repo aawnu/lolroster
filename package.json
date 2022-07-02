@@ -3,7 +3,7 @@
     "server": "ts-node --transpile-only server",
     "build": "npm ci && ts-node --transpile-only src/download",
     "download": "ts-node --transpile-only src/download",
-    "test": "ts-node --transpile-only test/validate-server-endpoint",
+    "test": "ts-node --transpile-only test/validate-endpoints",
     "dev": "tsnd --respawn --clear --watch 'src/**' server"
   },
   "dependencies": {

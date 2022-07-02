@@ -8,11 +8,16 @@ import crypto from "crypto"
 import * as caching from './src/cache'
 
 const app = express()
+
 const serverLocal = '127.0.0.1'
 const serverIp = env('SERVER_PUBLIC', '127.0.0.1') == 1 ? '0.0.0.0' : serverLocal
-const serverPort = Number(process.env?.SERVER_PORT || 3000)
-const validateServerPath = crypto.randomBytes(64).toString('hex')
-const validateServer = crypto.randomBytes(32).toString('hex')
+
+export const validateServer = crypto.randomBytes(32).toString('hex')
+export const validateServerPath = crypto.randomBytes(64).toString('hex')
+
+export let statusBool: boolean = false
+export let serverUrl: string = `http://${serverLocal}`;
+export const serverPort = Number(env('SERVER_PORT', 3000))
 
 app.use(express.json())
 app.use('/script', express.static('node_modules/axios/dist'))
@@ -189,37 +194,41 @@ app.post(`/${validateServerPath}`, (req, res) => {
     res.send(validateServer)
 })
 
-export let statusBool: boolean = false
-
 caching.build(false).then(err => {
     app.listen(serverPort, serverIp, () => {
         const host = `http://${serverLocal}:${serverPort}`
         console.log(`Local host: ${host}`)
-    
+
         const getIpTable = os.networkInterfaces()
         Object.values(getIpTable).forEach(list => {
             if (!list) {
                 return
             }
-            
+
             Object.values(list).forEach(listItem => {
                 if (!listItem || listItem.internal) {
                     return
                 }
-    
+
                 const ip = listItem.family == 'IPv6' ? `[${listItem.address}]` : listItem.address
                 const host = `http://${ip}:${serverPort}`
                 const self = `${host}/${validateServerPath}`
-                
+
                 axios({
                     method: 'POST',
                     url: self
                 }).then(res => {
                     if (res.data == validateServer) {
                         console.log(`Public host: ${host}`)
+                        serverUrl = host
                     }
-                }).catch(() => {})
+                }).catch(() => { })
             })
         })
+
+        statusBool = true
     })
-}).catch(() => console.log('Failed to start server'))
+}).catch(() => {
+    statusBool = false
+    console.log('Failed to start server')
+})
