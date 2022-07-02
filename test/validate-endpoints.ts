@@ -1,6 +1,6 @@
 import axios from "axios"
 
-type requestServer = { key: { url: string, status: number } }
+type requestServer = { url: string, status: number }
 
 import('../server').then(server => {
     return new Promise<requestServer[]>(async resEndpoint => {
@@ -37,7 +37,7 @@ import('../server').then(server => {
 
             const urlResponse = await axios.get(url)
             endpointStatus.push({
-                url: '' + urlResponse.request.path,
+                url: urlResponse.request.path,
                 status: urlResponse.status,
             })
 
@@ -55,7 +55,7 @@ import('../server').then(server => {
         }
     })
 }).then(testFinal => {
-    console.table((testFinal))
+    console.table(testFinal)
     process.exit(0)
 }).catch(serverError => {
     console.error('~ Server failed authentication ~', serverError)

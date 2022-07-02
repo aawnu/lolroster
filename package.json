@@ -3,7 +3,9 @@
     "server": "ts-node --transpile-only server",
     "build": "npm ci && ts-node --transpile-only src/download",
     "download": "ts-node --transpile-only src/download",
-    "dev": "tsnd --respawn --clear --watch 'src/**' server"
+    "dev": "tsnd --respawn --clear --watch 'src/**' server",
+    "devbuild": "ts-node --typeCheck --pretty server",
+    "devtest": "ts-node --typeCheck --pretty test/validate-endpoints"
   },
   "dependencies": {
     "@types/express": "^4.17.13",
