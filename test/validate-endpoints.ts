@@ -1,4 +1,5 @@
 import axios from "axios"
+import * as caching from "../src/cache"
 
 type requestServer = { url: string, status: number }
 
@@ -29,6 +30,13 @@ import('../server').then(server => {
             `${server.serverUrl}/lookup/spells`,
             `${server.serverUrl}/lookup/names`,
         ]
+
+        Object.entries(caching.teamsStructure).forEach(([cacheTeam, cacheData]) => {
+            Object.keys(cacheData).forEach(cacheKey => {
+                const buildUrl = `${server.serverUrl}/cache/${cacheTeam}/${cacheKey}`
+                endpoints.push(buildUrl + caching.useMedia)
+            })
+        })
 
         // ===================================================
 

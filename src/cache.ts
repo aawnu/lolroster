@@ -46,6 +46,9 @@ const supportMediaTypes = ['.png', '.jpg', '.jpeg', '.gif', '.bmp']
 const savePng = '.png'
 const saveTxt = '.txt'
 
+export const useMedia = savePng
+export const useText = saveTxt
+
 const saveSrc = path.resolve(srcData, 'cache.json')
 const cacheMem = fs.existsSync(saveSrc) ? fs.readFileSync(saveSrc, 'utf8') : ''
 const cacheMemData = cacheMem.length >= 2 ? JSON.parse(cacheMem) : {}
