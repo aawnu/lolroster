@@ -72,5 +72,5 @@ import('../server').then(server => {
     process.exit(0)
 }).catch(serverError => {
     console.error('~ Server failed authentication ~', serverError)
-    process.exit(0)
+    process.exit(1)
 })
