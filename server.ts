@@ -9,11 +9,11 @@ import * as caching from './src/cache'
 
 const app = express()
 
-const serverLocal = '127.0.0.1'
-const serverIp = env('SERVER_PUBLIC', '127.0.0.1') == 1 ? '0.0.0.0' : serverLocal
+const serverLocal: string = '127.0.0.1'
+const serverIp: string = env('SERVER_PUBLIC', '127.0.0.1') == 1 ? '0.0.0.0' : serverLocal
 
-export const validateServer = crypto.randomBytes(32).toString('hex')
-export const validateServerPath = crypto.randomBytes(64).toString('hex')
+export const validateServer: string = crypto.randomBytes(32).toString('hex')
+export const validateServerPath: string = crypto.randomBytes(64).toString('hex')
 
 export let statusBool: boolean = false
 export let serverUrl: string = `http://${serverLocal}`;
@@ -22,6 +22,7 @@ export const serverPort = Number(env('SERVER_PORT', 3000))
 app.use(express.json())
 app.use('/script', express.static('node_modules/axios/dist'))
 app.use('/script', express.static('node_modules/jquery/dist'))
+
 app.use('/cache', express.static('cache', {
     setHeaders: function (res, path) {
         res.set({
@@ -29,6 +30,7 @@ app.use('/cache', express.static('cache', {
         })
     }
 }))
+
 app.use('/live', express.static('cache', {
     setHeaders: function (res, path) {
         res.set({
@@ -37,12 +39,13 @@ app.use('/live', express.static('cache', {
         })
     }
 }))
+
 app.use(express.static('public'))
 
 app.get('/', (req, res) => {
-    const loadPath = path.resolve('core/www/dashboard.html')
+    const loadPath: string = path.resolve('core/www/dashboard.html')
 
-    let setHeaders = {
+    let setHeaders: object = {
         'Cache-Control': 'no-cache, must-revalidate',
         'Content-Type': 'text/html',
         'ETag': false
@@ -52,7 +55,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/cache', (req, res) => {
-    let setHeaders = {
+    let setHeaders: object = {
         'Cache-Control': 'no-cache, must-revalidate',
         'Content-Type': 'application/json',
         'ETag': false
@@ -62,14 +65,15 @@ app.get('/cache', (req, res) => {
 })
 
 app.post('/cache', (req, res) => {
-    let setHeaders = {
+    let setHeaders: object = {
         'Cache-Control': 'no-cache, must-revalidate',
         'Content-Type': 'application/json',
         'ETag': false
     }
-    const team = req.body?.team
-    const slot = req.body?.slot
-    const value = req.body?.value
+
+    const team: string = req.body?.team
+    const slot: string = req.body?.slot
+    const value: string = req.body?.value
 
     caching.push(team, slot, value).then(() => {
         caching.save().finally(() => {
@@ -81,9 +85,9 @@ app.post('/cache', (req, res) => {
 })
 
 app.get('/lookup/champs', (req, res) => {
-    const loadPath = path.resolve('core/data/champs.json')
+    const loadPath: string = path.resolve('core/data/champs.json')
 
-    let setHeaders = {
+    let setHeaders: object = {
         'Cache-Control': 'no-cache, must-revalidate',
         'Content-Type': 'application/json',
         'ETag': false
@@ -93,9 +97,9 @@ app.get('/lookup/champs', (req, res) => {
 })
 
 app.get('/lookup/spells', (req, res) => {
-    const loadPath = path.resolve('core/data/spells.json')
+    const loadPath: string = path.resolve('core/data/spells.json')
 
-    let setHeaders = {
+    let setHeaders: object = {
         'Cache-Control': 'no-cache, must-revalidate',
         'Content-Type': 'application/json',
         'ETag': false
@@ -105,15 +109,15 @@ app.get('/lookup/spells', (req, res) => {
 })
 
 app.get('/lookup/names', (req, res) => {
-    const loadNameRed = path.resolve('cache/red/name.txt')
-    const loadNameBlue = path.resolve('cache/blue/name.txt')
-    const loadNameMatch = path.resolve('cache/match.txt')
+    const loadNameRed: string = path.resolve('cache/red/name.txt')
+    const loadNameBlue: string = path.resolve('cache/blue/name.txt')
+    const loadNameMatch: string = path.resolve('cache/match.txt')
 
-    const nameBlue = fs.readFileSync(loadNameBlue, 'utf8')
-    const nameRed = fs.readFileSync(loadNameRed, 'utf8')
-    const nameMatch = fs.readFileSync(loadNameMatch, 'utf8')
+    const nameBlue: string = fs.readFileSync(loadNameBlue, 'utf8')
+    const nameRed: string = fs.readFileSync(loadNameRed, 'utf8')
+    const nameMatch: string = fs.readFileSync(loadNameMatch, 'utf8')
 
-    let setHeaders = {
+    let setHeaders: object = {
         'Cache-Control': 'no-cache, must-revalidate',
         'Content-Type': 'application/json',
         'ETag': false
@@ -127,13 +131,13 @@ app.get('/lookup/names', (req, res) => {
 })
 
 app.post('/action/name', (req, res) => {
-    const srcRed = path.resolve('cache/red/name.txt')
-    const srcBlue = path.resolve('cache/blue/name.txt')
-    const srcMatch = path.resolve('cache/match.txt')
+    const srcRed: string = path.resolve('cache/red/name.txt')
+    const srcBlue: string = path.resolve('cache/blue/name.txt')
+    const srcMatch: string = path.resolve('cache/match.txt')
 
-    const slot = req.body?.slot
-    const value = req.body?.value
-    const src = slot == 'blue' ? srcBlue : (slot == 'red' ? srcRed : (slot == 'match' ? srcMatch : null))
+    const slot: string = req.body?.slot
+    const value: string = req.body?.value
+    const src: string = slot == 'blue' ? srcBlue : (slot == 'red' ? srcRed : (slot == 'match' ? srcMatch : ''))
 
     if (!slot || !src) {
         return res.status(400).send({ name: value })
@@ -141,7 +145,7 @@ app.post('/action/name', (req, res) => {
 
     fs.writeFileSync(src, value)
 
-    let setHeaders = {
+    let setHeaders: object = {
         'Cache-Control': 'no-cache, must-revalidate',
         'Content-Type': 'application/json',
         'ETag': false
@@ -158,7 +162,7 @@ app.post('/action/reset', (req, res) => {
             return res.status(400).send()
         }
 
-        let setHeaders = {
+        let setHeaders: object = {
             'Cache-Control': 'no-cache, must-revalidate',
             'Content-Type': 'application/json',
             'ETag': false
@@ -169,16 +173,16 @@ app.post('/action/reset', (req, res) => {
 })
 
 app.post('/action/swap', (req, res) => {
-    const loadNameRed = path.resolve('cache/red/name.txt')
-    const loadNameBlue = path.resolve('cache/blue/name.txt')
+    const loadNameRed: string = path.resolve('cache/red/name.txt')
+    const loadNameBlue: string = path.resolve('cache/blue/name.txt')
 
-    const nameBlue = fs.readFileSync(loadNameBlue, 'utf8')
-    const nameRed = fs.readFileSync(loadNameRed, 'utf8')
+    const nameBlue: string = fs.readFileSync(loadNameBlue, 'utf8')
+    const nameRed: string = fs.readFileSync(loadNameRed, 'utf8')
 
     fs.writeFileSync(loadNameRed, nameBlue)
     fs.writeFileSync(loadNameBlue, nameRed)
 
-    let setHeaders = {
+    let setHeaders: object = {
         'Cache-Control': 'no-cache, must-revalidate',
         'Content-Type': 'application/json',
         'ETag': false
@@ -196,7 +200,7 @@ app.post(`/${validateServerPath}`, (req, res) => {
 
 caching.build(false).then(err => {
     app.listen(serverPort, serverIp, () => {
-        const host = `http://${serverLocal}:${serverPort}`
+        const host: string = `http://${serverLocal}:${serverPort}`
         console.log(`Local host: ${host}`)
 
         const getIpTable = os.networkInterfaces()
@@ -210,9 +214,9 @@ caching.build(false).then(err => {
                     return
                 }
 
-                const ip = listItem.family == 'IPv6' ? `[${listItem.address}]` : listItem.address
-                const host = `http://${ip}:${serverPort}`
-                const self = `${host}/${validateServerPath}`
+                const ip: string = listItem.family == 'IPv6' ? `[${listItem.address}]` : listItem.address
+                const host: string = `http://${ip}:${serverPort}`
+                const self: string = `${host}/${validateServerPath}`
 
                 axios({
                     method: 'POST',
