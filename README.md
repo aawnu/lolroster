@@ -1,71 +1,94 @@
-# League of Legends Rooster
+![League of Legends: Roster](.github/readme/preview.png)
 
-Beautify League of Legends livestreams with champion and spell avatars on the screen without showing the in-game ban/selection phase.
+> Beautify your League of Legends selection/ban phase with a simple click &amp; select tool to build your own layout.
+> No further need to use the in-game loading and selection screen while waiting out the spectator delay;
+> especially if you have live access to ban/champion picks.
 
-![Dashboard Preview](.github/preview.png)
+- [Getting Started](#getting-started)
+  - [Requirements &amp; Dependencies](#requirements--dependencies)
+  - [Download Source Code](#download-source-code)
+  - [Install Server Dependencies &amp; Images](#install-server-dependencies--images)
+  - [Start Server](#start-server)
+    - [Image Endpoints](#image-endpoints)
+    - [Image Proportions](#image-proportions)
+- [Terms &amp; Policies](#terms--policies)
 
-- [League of Legends Rooster](#league-of-legends-rooster)
-  - [Installation](#installation)
-  - [Download & Setup](#download--setup)
-  - [Server](#server)
-  - [Access images through host](#access-images-through-host)
-  - [Policy](#policy)
+# Getting Started
 
-## Installation
+*If you are using this for livestreaming; please consider running the server on your livestreaming device so that images are directly accessible to your streaming software rather than loading in through the local network.*
 
-First we need to make sure that NodeJS is installed and running on our marchine. This can be done by opening your terminal (CMD on Windows) and run `node -v`. If you are not using another package manager, then also check that NPM is installed by running `npm -v` in the terminal too.
+## Requirements &amp; Dependencies 
 
-If it is not installed, then please install it by running the following command matching your system/OS. You can also go to the link and download it manually if preferred. Once its installed then make sure to reboot your OS (Restart your computer if Windows) and check the commands from before again to make sure all is running.
+**This project is running NodeJS and is tested/validated on version 17.x and 18.x**
 
-| System (OS)  | Terminal command                       |
+First we need to check if you already have NodeJS and NPM running on your machine. Please run the following commands in your terminal to ensure they are installed and has the preferred version:
+- `node -v` should preferrably be `17.x` or `18.x`
+- `npm -v` should preferrably return `8.x` or higher as that is version used through development
+
+If you do not have NodeJS or NPM installed on your machine, you can download it from here:
+
+| System (OS)  | Terminal command / link                |
 | ------------ | -------------------------------------- |
-| **Linux**    | `sudo apt install nodejs`              |
 | **Windows**  | `winget install -e --id OpenJS.NodeJS` |
 | **Macbook**  | `brew install node`                    |
+| **Linux**    | `sudo apt install nodejs`              |
 | **Download** | https://nodejs.org/en/download/        |
 
-## Download & Setup
+## Download Source Code
 
-Now that NodeJS and a package manager is installed and ready to use, it's time to download the source code from a stable version. If you are on github then please go to "Releases" in the right sidebar and download the Source.zip from the latest stable release (Not "Pre-Release" or ending with either "-alpha" or "-beta").
+First you need to download the source code for this project; please navigate to the "Releases" section in the sidebar or click on the version tagged (Latest) below it. Navigate to "Assets" and download either the `Zip` or `Tar.gz` file.
 
-Unpack the contents of the ZIP folder where you want the server to be located in your system. It would be recommended to place it somewhere with a short or easy route to navigate by terminal. Something like `C:\nodejs\lolrooster` on Windows.
+After the download you can unpack the code anywhere; but I recommend you do it somewhere simple to naviate, like:
+| System (OS) | Full Path                   | Shortcut Path |
+| ----------- | --------------------------- | ------------- |
+| **Windows** | `C:\Users\%USER%\lolroster` | `~\lolroster` |
+| **Macbook** | `/Users/%USER%/lolroster`   | `~/lolroster` |
+| **Linux**   | `/home/%USER%/lolroster`    | `~/lolroster` |
 
-Now open the folder and open `.env` in a simple editor; you can use Notepad on Windows and then make sure `DRAGON_API_VERSION="%"` is the latest version from here: [DDragon API Versions](https://ddragon.leagueoflegends.com/api/versions.json)
+## Install Server Dependencies &amp; Images
 
-Now please navigate to the folder in your terminal (CMD on Windows) and type `cd C:\nodejs\lolrooster` (Or where ever you unpacked the ZIP folder) and run `npm run build` for it to download all champ and spell images from Riot. If you update the version later on then you can run `npm run download` to redownload all images.
+When the server is unpacked, please open your terminal and navigate to the folder in which the server is unpacked. If saved by the example before, simply open your terminal and type `cd` following the shortcut path, eg. `cd ~\lolroster` on Windows.
 
-Now that everything is setup and you are now ready to start the server. When you start the server it will attempt to build the cache files from `core/data/cache.js` or build it from new. All the cache files will be place inside the `cache/` folder.
+Now you can simply type `npm run build` to download dependencies and populate images to the server. If you need to re-download images later on, simply use `npm run download`
 
-## Server
+> It will automaticall find the latest version of League of Legends rotation and download images accordingly
 
-To start the server please cd into the folder like before and then run `npm run server`. It will then prompt you with an/some IP-Addresses where the server is hosted; something like `http://ip:port/`. It should by default always be available at `http://127.0.0.1:port` where the default port is `3000` if not changed inside the `.env` file. Please note that any `127.x.x.x` IP-Addresses are internal and can only be access by the same device hosting the server.
+## Start Server
 
-The local network IP-Address that is shared should, if following the IPV4 structure, be something like `192.168.x.x`.
+Make sure your reminal is navigated into the server folder, eg. `cd ~\lolroster` on windows.
 
-## Access images through host
+Now you simply run the command `npm run server` to start the server. Local Host is internally accessible by your machine only. Public Host is by default only accessible by other machines on the same network as you, unless the ip:port is exposed in your router.
 
-All the interesting files that are exposed on the hosted server through various endpoints:
+```sh
+mbs@mbs:~/lolroster$ npm run server
 
-| Host path                    | Local path if any      | Description                                                |
-| ---------------------------- | ---------------------- | ---------------------------------------------------------- |
-| `http://ip:port/cache/...`   | `./cache/...`          | Access all cache files through the (local) network         |
-| `http://ip:port/live/...`    |                        | Same as cache but with a fixed Refresh header of 2 seconds |
-| `http://ip:port/default/...` | `./public/default/...` | Default/placeholder images                                 |
-| `http://ip:port/champ/...`   | `./public/champ/..`.   | All downloaded champion avatars downloaded from Riot       |
-| `http://ip:port/banner/...`  | `./public/banner/...`  | All downloaded champion banners downloaded from Riot       |
-| `http://ip:port/spell/...`   | `./public/spell/...`   | All downloaded spell icons downloaded from Riot            |
+> server
+> ts-node --transpile-only server
 
-- Example: `./cache/red/ban1.png` can be found on both `http://ip:port/cache/red/ban1.png` and `http://ip:port/live/red/ban1.png` with the only difference that /live/ has a Refresh header of 2 seconds.
+Local host: http://127.0.0.1:3000
+Public host: http://172.30.235.20:3000
+```
 
-Please note that these are the default sizes of the images downloaded from Riot:
+### Image Endpoints
 
-| Image             | Size in pixels  |
-| ----------------- | --------------- |
-| Champ<br>(or Ban) | `120w` x `120h` |
-| Banner            | `308w` x `560h` |
-| Spell             | `64w` x `64h`   |
+| Host path                    | Local path             | Description                                          |
+| ---------------------------- | ---------------------- | ---------------------------------------------------- |
+| `http://ip:port/cache/...`   | `./cache/...`          | Access all cache files through the (local) network   |
+| `http://ip:port/live/...`    |                        | Same as cache but with a Refresh header of 2 seconds |
+| `http://ip:port/default/...` | `./public/default/...` | Default/placeholder images                           |
+| `http://ip:port/champ/...`   | `./public/champ/..`.   | All champion avatars downloaded from Riot            |
+| `http://ip:port/banner/...`  | `./public/banner/...`  | All champion banners downloaded from Riot            |
+| `http://ip:port/spell/...`   | `./public/spell/...`   | All spell icons downloaded from Riot                 |
 
-## Policy
+### Image Proportions
 
-Please read the policies from Riot Games before the use of this code:  
-https://developer.riotgames.com/policies/general
+| Image  | Size in pixels  |
+| ------ | --------------- |
+| Avatar | `120w` x `120h` |
+| Banner | `308w` x `560h` |
+| Spell  | `64w` x `64h`   |
+
+# Terms &amp; Policies
+
+- [LoLRoster MIT License](LICENSE)
+- [Riot Games Developer Policies](https://developer.riotgames.com/policies/general)
