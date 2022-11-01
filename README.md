@@ -76,7 +76,7 @@ Public host: http://172.30.235.20:3000
 | `http://ip:port/cache/...`   | `./cache/...`          | Access all cache files through the (local) network   |
 | `http://ip:port/live/...`    |                        | Same as cache but with a Refresh header of 2 seconds |
 | `http://ip:port/default/...` | `./public/default/...` | Default/placeholder images                           |
-| `http://ip:port/champ/...`   | `./public/champ/..`.   | All champion avatars downloaded from Riot            |
+| `http://ip:port/champ/...`   | `./public/champ/...`   | All champion avatars downloaded from Riot            |
 | `http://ip:port/banner/...`  | `./public/banner/...`  | All champion banners downloaded from Riot            |
 | `http://ip:port/spell/...`   | `./public/spell/...`   | All spell icons downloaded from Riot                 |
 
